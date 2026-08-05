@@ -217,7 +217,7 @@ export const demoClient = {
       return { data: { subscription: { unsubscribe: () => listeners.delete(cb) } } };
     },
     async signInWithPassword({ email, password }: { email: string; password: string }) {
-      if (email !== DEMO_EMAIL || password !== DEMO_SENHA) {
+      if (email.trim().toLowerCase() !== DEMO_EMAIL || password !== DEMO_SENHA) {
         return { error: { message: 'E-mail ou senha inválidos.' } };
       }
       const session: Session = { user: { id: 'demo-admin', email } };
