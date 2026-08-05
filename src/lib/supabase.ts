@@ -1,20 +1,15 @@
+import { createClient } from '@supabase/supabase-js';
 import { prepararImagem } from './imagem';
-import { demoClient } from './demoClient';
 
-// MODO APRESENTAÇÃO: a conexão com o Supabase está desligada de propósito e o site
-// roda 100% num banco temporário do navegador (localStorage — veja lib/demoClient.ts
-// e lib/localDb.ts). Pra voltar a usar o Supabase real depois da apresentação, troque
-// o bloco abaixo de volta para o createClient com as chaves do .env.
-//
-// import { createClient } from '@supabase/supabase-js';
-// const url = import.meta.env.VITE_SUPABASE_URL as string;
-// const anon = import.meta.env.VITE_SUPABASE_ANON as string;
-// export const supabase = createClient(url, anon);
+const url = import.meta.env.VITE_SUPABASE_URL as string;
+const anon = import.meta.env.VITE_SUPABASE_ANON as string;
 
-export const supabase = demoClient;
+export const supabase = createClient(url, anon);
 
+// Enquanto o .env não tiver as chaves reais do Supabase, o site usa dados de
+// demonstração (src/lib/mockData.ts) em vez de consultar o banco.
 export function isDemoMode(): boolean {
-  return true;
+  return !url || url.includes('placeholder') || url.includes('SEU-PROJETO');
 }
 
 export const FOTOS_BUCKET = 'fotos';

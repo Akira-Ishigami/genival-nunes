@@ -19,7 +19,7 @@ insert into conteudo_institucional (chave, titulo, corpo) values
 on conflict (chave) do nothing;
 
 insert into contato_info (id, endereco, bairro, cidade, cep, whatsapp, instagram, facebook, latitude, longitude) values
-(1, 'Rua 907, nº 2078', 'Boa Esperança', 'Vilhena/RO', '76985-440', '5569984373868', '@escola_genival_nunes', 'EEEF Deputado Genival Nunes da Costa', -12.726281, -60.111185)
+(1, 'Rua 907, nº 2078', 'Nova Esperança', 'Vilhena/RO', '76980-000', '556933222863', '@escola_genival_nunes', 'EEEF. Deputado Genival Nunes da Costa', -12.726281, -60.111185)
 on conflict (id) do update set
   endereco = excluded.endereco,
   bairro = excluded.bairro,

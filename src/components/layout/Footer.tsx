@@ -65,7 +65,7 @@ export default function Footer() {
             )}
             {contato?.facebook && (
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/people/EEEF-Deputado-Genival-Nunes-da-Costa/100067889283109/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"

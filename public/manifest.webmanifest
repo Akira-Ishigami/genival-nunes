@@ -6,7 +6,7 @@
   "background_color": "#f5f8fc",
   "theme_color": "#0b3d78",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" },
     { "src": "/logo/logo.webp", "sizes": "192x192", "type": "image/webp" }
   ]
 }
