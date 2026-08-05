@@ -71,9 +71,9 @@ export const MOCK_CONTEUDO: Record<string, ConteudoInstitucional> = {
 export const MOCK_CONTATO: ContatoInfo = {
   id: 1,
   endereco: 'Rua 907, nº 2078',
-  bairro: 'Boa Esperança',
+  bairro: 'Nova Esperança',
   cidade: 'Vilhena/RO',
-  cep: '76985-440',
+  cep: '76980-000',
   whatsapp: '5569984373868',
   instagram: '@escola_genival_nunes',
   facebook: 'EEEF Deputado Genival Nunes da Costa',

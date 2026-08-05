@@ -172,6 +172,11 @@ type AuthListener = (event: AuthEvent, session: Session | null) => void;
 const AUTH_KEY = 'demo_db:__auth__';
 const listeners = new Set<AuthListener>();
 
+// Credenciais fixas do modo apresentação — só pra dar um pouco de realismo ao
+// login, já que não há autenticação de verdade por trás disso.
+const DEMO_EMAIL = 'genivalnunes@gmail.com';
+const DEMO_SENHA = 'genivalnunesdacosta@!';
+
 function loadSession(): Session | null {
   const raw = localStorage.getItem(AUTH_KEY);
   return raw ? JSON.parse(raw) : null;
@@ -212,7 +217,9 @@ export const demoClient = {
       return { data: { subscription: { unsubscribe: () => listeners.delete(cb) } } };
     },
     async signInWithPassword({ email, password }: { email: string; password: string }) {
-      if (!email || !password) return { error: { message: 'Informe e-mail e senha.' } };
+      if (email !== DEMO_EMAIL || password !== DEMO_SENHA) {
+        return { error: { message: 'E-mail ou senha inválidos.' } };
+      }
       const session: Session = { user: { id: 'demo-admin', email } };
       saveSession(session);
       listeners.forEach((cb) => cb('SIGNED_IN', session));
