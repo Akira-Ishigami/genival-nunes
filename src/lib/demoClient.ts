@@ -172,10 +172,11 @@ type AuthListener = (event: AuthEvent, session: Session | null) => void;
 const AUTH_KEY = 'demo_db:__auth__';
 const listeners = new Set<AuthListener>();
 
-// Credenciais fixas do modo apresentação — só pra dar um pouco de realismo ao
-// login, já que não há autenticação de verdade por trás disso.
-const DEMO_EMAIL = 'genivalnunes@gmail.com';
-const DEMO_SENHA = 'genivalnunesdacosta@!';
+// Credenciais do login no modo apresentação, lidas do .env (não versionado) — só
+// pra dar um pouco de realismo ao login, já que não há autenticação de verdade
+// por trás disso. Veja .env.example.
+const DEMO_EMAIL = (import.meta.env.VITE_DEMO_EMAIL as string ?? '').trim().toLowerCase();
+const DEMO_SENHA = (import.meta.env.VITE_DEMO_SENHA as string) ?? '';
 
 function loadSession(): Session | null {
   const raw = localStorage.getItem(AUTH_KEY);
