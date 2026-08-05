@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_DEMO_EMAIL: string;
-  readonly VITE_DEMO_SENHA: string;
+  readonly VITE_SUPABASE_URL: string;
+  readonly VITE_SUPABASE_ANON: string;
 }
 
 interface ImportMeta {

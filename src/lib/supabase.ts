@@ -1,9 +1,10 @@
+import { createClient } from '@supabase/supabase-js';
 import { prepararImagem } from './imagem';
-import { demoClient } from './demoClient';
 
-// Site de apresentação: roda 100% num banco temporário do navegador (localStorage
-// — veja lib/demoClient.ts e lib/localDb.ts), sem backend real por trás.
-export const supabase = demoClient;
+const url = import.meta.env.VITE_SUPABASE_URL as string;
+const anon = import.meta.env.VITE_SUPABASE_ANON as string;
+
+export const supabase = createClient(url, anon);
 
 export const FOTOS_BUCKET = 'fotos';
 
