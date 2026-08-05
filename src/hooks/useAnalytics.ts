@@ -37,11 +37,14 @@ export function useAnalytics(periodo: PeriodoAnalytics = 'total') {
   const [linhas, setLinhas] = useState<{ created_at: string; dispositivo: string; origem: string }[] | null>(null);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [recarregando, setRecarregando] = useState(false);
+  const [versao, setVersao] = useState(0);
 
   useEffect(() => {
     let mounted = true;
 
     async function carregar() {
+      if (versao > 0) setRecarregando(true);
       const [{ count }, { data }] = await Promise.all([
         supabase.from('page_views').select('*', { count: 'exact', head: true }),
         supabase.from('page_views').select('created_at, dispositivo, origem'),
@@ -51,13 +54,17 @@ export function useAnalytics(periodo: PeriodoAnalytics = 'total') {
       setTotal(count ?? 0);
       setLinhas(data ?? []);
       setLoading(false);
+      setRecarregando(false);
     }
 
     carregar();
     return () => {
       mounted = false;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [versao]);
+
+  const atualizar = () => setVersao((v) => v + 1);
 
   const dados = useMemo<AnalyticsResumo | null>(() => {
     if (!linhas) return null;
@@ -112,5 +119,5 @@ export function useAnalytics(periodo: PeriodoAnalytics = 'total') {
     };
   }, [linhas, total, periodo]);
 
-  return { dados, loading };
+  return { dados, loading, recarregando, atualizar };
 }

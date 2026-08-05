@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Trophy, Images, Megaphone, ExternalLink, Smartphone, Monitor, Tablet, Eye } from 'lucide-react';
+import { Users, Trophy, Images, Megaphone, ExternalLink, Smartphone, Monitor, Tablet, Eye, RefreshCw } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAnalytics, type PeriodoAnalytics } from '../../hooks/useAnalytics';
 
@@ -34,7 +34,7 @@ const ICONE_DISPOSITIVO: Record<string, typeof Smartphone> = {
 export default function DashboardPage() {
   const [contagens, setContagens] = useState<Record<string, number>>({});
   const [periodo, setPeriodo] = useState<PeriodoAnalytics>('total');
-  const { dados, loading: carregandoAnalytics } = useAnalytics(periodo);
+  const { dados, loading: carregandoAnalytics, recarregando, atualizar } = useAnalytics(periodo);
 
   useEffect(() => {
     CARDS.forEach(({ table }) => {
@@ -86,19 +86,30 @@ export default function DashboardPage() {
           <Eye className="h-5 w-5 text-brand" />
           <h2 className="font-display text-lg font-bold text-ink">Quem está visitando o site</h2>
         </div>
-        <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
-          {PERIODOS.map((p) => (
-            <button
-              key={p.value}
-              type="button"
-              onClick={() => setPeriodo(p.value)}
-              className={`tap-target rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                periodo === p.value ? 'bg-white text-brand shadow-card' : 'text-slate-500 hover:text-ink'
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
+            {PERIODOS.map((p) => (
+              <button
+                key={p.value}
+                type="button"
+                onClick={() => setPeriodo(p.value)}
+                className={`tap-target rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  periodo === p.value ? 'bg-white text-brand shadow-card' : 'text-slate-500 hover:text-ink'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={atualizar}
+            disabled={recarregando}
+            aria-label="Atualizar resultados"
+            className="tap-target flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-500 transition-colors hover:text-brand disabled:opacity-60"
+          >
+            <RefreshCw className={`h-4 w-4 ${recarregando ? 'animate-spin' : ''}`} />
+          </button>
         </div>
       </div>
 
