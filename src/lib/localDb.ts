@@ -21,6 +21,10 @@ const SEED: Record<string, unknown[]> = {
 };
 
 export function readTable<T = Record<string, any>>(table: string): T[] {
+  // contato_info não tem tela de edição no admin — sempre reflete o mockData.ts
+  // atual em vez de ficar preso ao valor gravado no localStorage na primeira visita.
+  if (table === 'contato_info') return JSON.parse(JSON.stringify(SEED.contato_info)) as T[];
+
   const key = PREFIX + table;
   const raw = localStorage.getItem(key);
   if (raw) {

@@ -65,7 +65,7 @@ export default function Footer() {
             )}
             {contato?.facebook && (
               <a
-                href="https://facebook.com"
+                href={contato.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"

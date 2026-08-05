@@ -1,6 +1,5 @@
-// Dados de demonstração usados quando o Supabase ainda não foi configurado
-// (veja isDemoMode() em lib/supabase.ts). Espelha o conteúdo de
-// supabase/migrations/004_seed.sql e 005_dados_mock.sql — mantenha os dois em sincronia.
+// Dados de demonstração que povoam o banco temporário do navegador (localStorage)
+// no primeiro carregamento — veja lib/localDb.ts.
 import type {
   Professor, Atividade, GaleriaFoto, Post, ConteudoInstitucional, ContatoInfo, Secao, SecaoItem,
 } from '../types';
@@ -74,9 +73,9 @@ export const MOCK_CONTATO: ContatoInfo = {
   bairro: 'Nova Esperança',
   cidade: 'Vilhena/RO',
   cep: '76980-000',
-  whatsapp: '5569984373868',
+  whatsapp: '556933222863',
   instagram: '@escola_genival_nunes',
-  facebook: 'EEEF Deputado Genival Nunes da Costa',
+  facebook: 'https://www.facebook.com/profile.php?id=100067889283109&locale=pt_BR',
   latitude: -12.726281,
   longitude: -60.111185,
   updated_at: now,
