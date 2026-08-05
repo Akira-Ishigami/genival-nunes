@@ -2,7 +2,21 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Trophy, Images, Megaphone, ExternalLink, Smartphone, Monitor, Tablet, Eye } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { useAnalytics } from '../../hooks/useAnalytics';
+import { useAnalytics, type PeriodoAnalytics } from '../../hooks/useAnalytics';
+
+const PERIODOS: { value: PeriodoAnalytics; label: string }[] = [
+  { value: 'hoje', label: 'Hoje' },
+  { value: 'semana', label: '7 dias' },
+  { value: 'mes', label: '30 dias' },
+  { value: 'total', label: 'Total' },
+];
+
+const ROTULO_PERIODO: Record<PeriodoAnalytics, string> = {
+  hoje: 'hoje',
+  semana: 'últimos 7 dias',
+  mes: 'últimos 30 dias',
+  total: 'desde o início',
+};
 
 const CARDS = [
   { table: 'professores', label: 'Equipe', icon: Users, to: '/admin/professores' },
@@ -19,7 +33,8 @@ const ICONE_DISPOSITIVO: Record<string, typeof Smartphone> = {
 
 export default function DashboardPage() {
   const [contagens, setContagens] = useState<Record<string, number>>({});
-  const { dados, loading: carregandoAnalytics } = useAnalytics();
+  const [periodo, setPeriodo] = useState<PeriodoAnalytics>('total');
+  const { dados, loading: carregandoAnalytics } = useAnalytics(periodo);
 
   useEffect(() => {
     CARDS.forEach(({ table }) => {
@@ -66,9 +81,25 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="mb-4 flex items-center gap-2">
-        <Eye className="h-5 w-5 text-brand" />
-        <h2 className="font-display text-lg font-bold text-ink">Quem está visitando o site</h2>
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2">
+          <Eye className="h-5 w-5 text-brand" />
+          <h2 className="font-display text-lg font-bold text-ink">Quem está visitando o site</h2>
+        </div>
+        <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
+          {PERIODOS.map((p) => (
+            <button
+              key={p.value}
+              type="button"
+              onClick={() => setPeriodo(p.value)}
+              className={`tap-target rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                periodo === p.value ? 'bg-white text-brand shadow-card' : 'text-slate-500 hover:text-ink'
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {carregandoAnalytics && (
@@ -118,7 +149,7 @@ export default function DashboardPage() {
 
             {/* Celular x Computador */}
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card lg:col-span-2">
-              <p className="mb-4 text-sm font-semibold text-ink">Celular ou computador?</p>
+              <p className="mb-4 text-sm font-semibold text-ink">Celular ou computador? <span className="font-normal text-slate-400">({ROTULO_PERIODO[periodo]})</span></p>
               {totalDispositivos === 0 ? (
                 <p className="py-8 text-center text-sm text-slate-400">Sem dados ainda.</p>
               ) : (
@@ -147,7 +178,7 @@ export default function DashboardPage() {
 
           {/* De onde vieram */}
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-            <p className="mb-4 text-sm font-semibold text-ink">De onde as pessoas vieram (últimos 30 dias)</p>
+            <p className="mb-4 text-sm font-semibold text-ink">De onde as pessoas vieram <span className="font-normal text-slate-400">({ROTULO_PERIODO[periodo]})</span></p>
             {dados.porOrigem.length === 0 ? (
               <p className="py-4 text-center text-sm text-slate-400">Sem dados ainda.</p>
             ) : (

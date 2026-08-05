@@ -98,6 +98,39 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Registra o acesso à página direto aqui, sem depender do React ter
+      // carregado — assim funciona mesmo se algo no bundle falhar.
+      (function () {
+        try {
+          if (window.location.pathname !== '/') return;
+          var w = window.innerWidth;
+          var dispositivo = w < 640 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop';
+          var origem = 'Direto';
+          if (document.referrer) {
+            try {
+              var host = new URL(document.referrer).hostname.replace('www.', '');
+              if (host.includes('google')) origem = 'Google';
+              else if (host.includes('instagram')) origem = 'Instagram';
+              else if (host.includes('facebook')) origem = 'Facebook';
+              else if (host.includes('whatsapp') || host.includes('wa.me')) origem = 'WhatsApp';
+              else if (host !== window.location.hostname) origem = host;
+            } catch (e) {}
+          }
+          fetch('%VITE_SUPABASE_URL%/rest/v1/page_views', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: '%VITE_SUPABASE_ANON%',
+              Authorization: 'Bearer %VITE_SUPABASE_ANON%',
+              Prefer: 'return=minimal',
+            },
+            body: JSON.stringify({ caminho: window.location.pathname, dispositivo: dispositivo, origem: origem }),
+            keepalive: true,
+          }).catch(function () {});
+        } catch (e) {}
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

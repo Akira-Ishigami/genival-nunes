@@ -10,11 +10,9 @@ import EstruturaSection from '../../components/sections/EstruturaSection';
 import SecoesDinamicasSection from '../../components/sections/SecoesDinamicasSection';
 import LocalizacaoSection from '../../components/sections/LocalizacaoSection';
 import { useSecoes } from '../../hooks/useSecoes';
-import { useTrackPageView } from '../../hooks/useTrackPageView';
 
 export default function HomePage() {
   const { secoes } = useSecoes();
-  useTrackPageView();
 
   return (
     <div className="min-h-screen">
