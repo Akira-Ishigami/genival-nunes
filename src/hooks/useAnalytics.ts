@@ -41,7 +41,7 @@ export function useAnalytics() {
 
       if (!mounted) return;
 
-      const rows = ultimos30 ?? [];
+      const rows: { created_at: string; dispositivo: string; origem: string }[] = ultimos30 ?? [];
       const hojeInicio = inicioDoDia(0);
       const semanaInicio = inicioDoDia(6);
 

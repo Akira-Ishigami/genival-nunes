@@ -6,12 +6,6 @@ const anon = import.meta.env.VITE_SUPABASE_ANON as string;
 
 export const supabase = createClient(url, anon);
 
-// Enquanto o .env não tiver as chaves reais do Supabase, o site usa dados de
-// demonstração (src/lib/mockData.ts) em vez de consultar o banco.
-export function isDemoMode(): boolean {
-  return !url || url.includes('placeholder') || url.includes('SEU-PROJETO');
-}
-
 export const FOTOS_BUCKET = 'fotos';
 
 export function fotoPublicUrl(path: string): string {

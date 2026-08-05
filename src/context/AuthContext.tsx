@@ -1,7 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Profile } from '../types';
+
+// Formato mínimo de usuário/sessão que este contexto realmente usa — evita
+// importar os tipos completos do supabase-js só por causa de dois campos.
+type User = { id: string; email?: string };
+type Session = { user: User };
 
 interface AuthCtx {
   user: User | null;

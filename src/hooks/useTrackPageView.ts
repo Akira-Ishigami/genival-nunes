@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { supabase, isDemoMode } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 function detectarDispositivo(): 'mobile' | 'tablet' | 'desktop' {
   const w = window.innerWidth;
@@ -24,10 +24,9 @@ function detectarOrigem(): string {
   }
 }
 
-// Registra um acesso à página uma vez por visita, só em produção (não em modo demo).
+// Registra um acesso à página uma vez por visita.
 export function useTrackPageView() {
   useEffect(() => {
-    if (isDemoMode()) return;
     supabase.from('page_views').insert({
       caminho: window.location.pathname,
       dispositivo: detectarDispositivo(),
