@@ -89,7 +89,7 @@ export default function EquipeSection() {
 
       {!loading && pessoas.length === 0 && (
         <Container>
-          <p className="text-center text-white/50">Em breve, essa equipe será publicada aqui.</p>
+          <p className="text-center text-white/70">Em breve, essa equipe será publicada aqui.</p>
         </Container>
       )}
 
@@ -141,7 +141,7 @@ export default function EquipeSection() {
               </p>
               <h3 className="font-display text-2xl font-semibold text-navy">{selecionado.nome}</h3>
               {(selecionado.cargo || selecionado.disciplina) && (
-                <p className="mt-0.5 text-sm text-ink/50">
+                <p className="mt-0.5 text-sm text-ink/70">
                   {selecionado.cargo}
                   {selecionado.cargo && selecionado.disciplina && ' · '}
                   {selecionado.disciplina}

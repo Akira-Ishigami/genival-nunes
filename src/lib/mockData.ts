@@ -77,8 +77,8 @@ export const MOCK_CONTATO: ContatoInfo = {
   whatsapp: '5569984373868',
   instagram: '@escola_genival_nunes',
   facebook: 'EEEF Deputado Genival Nunes da Costa',
-  latitude: -12.7406,
-  longitude: -60.1458,
+  latitude: -12.726281,
+  longitude: -60.111185,
   updated_at: now,
 };
 

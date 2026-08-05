@@ -24,7 +24,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-white/40">Contato</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-white/60">Contato</h4>
           <ul className="mt-3 space-y-2 text-sm">
             {contato?.endereco && (
               <li className="flex items-start gap-2">
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-white/40">Redes sociais</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-white/60">Redes sociais</h4>
           <div className="mt-3 flex gap-3">
             {contato?.instagram && (
               <a
@@ -90,7 +90,7 @@ export default function Footer() {
       </Container>
 
       <div className="border-t border-white/10">
-        <Container className="flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/40 sm:flex-row">
+        <Container className="flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/55 sm:flex-row">
           <p>
             {/*
               Ponto de acesso do painel administrativo: propositalmente discreto,
@@ -112,13 +112,13 @@ export default function Footer() {
 
       <div className="border-t border-white/5">
         <Container className="flex justify-center py-4">
-          <p className="text-[11px] text-white/30">
+          <p className="text-[11px] text-white/50">
             Feito por{' '}
             <a
               href="https://www.instagram.com/dev__akira/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-white/50 transition-colors hover:text-yellow"
+              className="font-semibold text-white/70 transition-colors hover:text-yellow"
             >
               Akira Ishigami Magalhães
             </a>

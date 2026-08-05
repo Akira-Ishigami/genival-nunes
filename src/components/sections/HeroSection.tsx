@@ -97,7 +97,7 @@ export default function HeroSection() {
               <dd className="font-display text-3xl font-semibold text-white sm:text-4xl">
                 <CountUp value={s.value} suffix={s.suffix} />
               </dd>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wide text-white/50 sm:text-sm">{s.label}</p>
+              <p className="mt-1 text-xs font-medium uppercase tracking-wide text-white/70 sm:text-sm">{s.label}</p>
             </div>
           ))}
         </dl>

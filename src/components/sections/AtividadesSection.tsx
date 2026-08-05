@@ -49,7 +49,7 @@ export default function AtividadesSection() {
               type="button"
               onClick={() => setFiltro(f.value)}
               className={`tap-target rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                filtro === f.value ? 'bg-navy text-white' : 'bg-white text-navy/60 shadow-card hover:text-navy'
+                filtro === f.value ? 'bg-navy text-white' : 'bg-white text-navy/75 shadow-card hover:text-navy'
               }`}
             >
               {f.label}
@@ -64,7 +64,7 @@ export default function AtividadesSection() {
         )}
 
         {!loading && filtradas.length === 0 && (
-          <p className="text-center text-ink/50">Nenhuma atividade nesta categoria ainda.</p>
+          <p className="text-center text-ink/70">Nenhuma atividade nesta categoria ainda.</p>
         )}
 
         <div className="grid grid-cols-1 gap-5 sm:auto-rows-[13rem] sm:grid-cols-3">

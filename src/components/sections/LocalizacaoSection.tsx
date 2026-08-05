@@ -74,7 +74,7 @@ export default function LocalizacaoSection({ number }: { number: number }) {
                 </span>
                 <div>
                   <h3 className="font-display text-base font-semibold text-navy">Endereço</h3>
-                  <p className="mt-1 text-sm text-ink/60">
+                  <p className="mt-1 text-sm text-ink/75">
                     {contato?.endereco}, {contato?.bairro}
                     <br />
                     {contato?.cidade} — CEP {contato?.cep}
@@ -104,7 +104,7 @@ export default function LocalizacaoSection({ number }: { number: number }) {
                 )}
               </div>
 
-              <p className="text-center text-xs text-ink/40">
+              <p className="text-center text-xs text-ink/65">
                 Chame no WhatsApp pra combinar o melhor dia e horário — vamos adorar te receber.
               </p>
             </div>

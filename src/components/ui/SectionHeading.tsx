@@ -25,7 +25,7 @@ export default function SectionHeading({
           className={`h-px w-10 ${light ? 'bg-white/30' : 'bg-navy/20'}`}
         />
         <span
-          className={`text-xs font-bold uppercase tracking-[0.22em] ${light ? 'text-white/60' : 'text-navy/50'}`}
+          className={`text-xs font-bold uppercase tracking-[0.22em] ${light ? 'text-white/75' : 'text-navy/70'}`}
         >
           {eyebrow}
         </span>
@@ -38,7 +38,7 @@ export default function SectionHeading({
         {title}
       </h2>
       {subtitle && (
-        <p className={`mt-4 max-w-xl text-base leading-relaxed sm:text-lg ${light ? 'text-white/75' : 'text-ink/60'} ${align === 'center' ? 'mx-auto' : ''}`}>
+        <p className={`mt-4 max-w-xl text-base leading-relaxed sm:text-lg ${light ? 'text-white/85' : 'text-ink/75'} ${align === 'center' ? 'mx-auto' : ''}`}>
           {subtitle}
         </p>
       )}

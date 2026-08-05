@@ -1,18 +1,12 @@
 import { useEffect, useState } from 'react';
-import { supabase, isDemoMode } from '../lib/supabase';
-import { MOCK_SECOES } from '../lib/mockData';
+import { supabase } from '../lib/supabase';
 import type { Secao } from '../types';
 
 export function useSecoes() {
-  const [secoes, setSecoes] = useState<Secao[]>(isDemoMode() ? MOCK_SECOES : []);
-  const [loading, setLoading] = useState(!isDemoMode());
+  const [secoes, setSecoes] = useState<Secao[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isDemoMode()) {
-      setSecoes(MOCK_SECOES);
-      setLoading(false);
-      return;
-    }
     let mounted = true;
     supabase
       .from('secoes')

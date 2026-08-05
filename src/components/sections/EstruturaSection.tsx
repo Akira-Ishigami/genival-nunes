@@ -47,7 +47,7 @@ export default function EstruturaSection() {
         )}
 
         {!loading && fotos.length === 0 && (
-          <p className="text-center text-ink/50">As fotos da estrutura serão publicadas em breve.</p>
+          <p className="text-center text-ink/70">As fotos da estrutura serão publicadas em breve.</p>
         )}
 
         <div className="grid grid-cols-2 gap-4 sm:auto-rows-[10rem] sm:grid-cols-4">
@@ -92,7 +92,7 @@ export default function EstruturaSection() {
             <div className="p-5">
               <h3 className="font-display text-base font-semibold text-navy">{selecionada.titulo}</h3>
               {selecionada.descricao && (
-                <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-ink/60">
+                <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-ink/75">
                   {selecionada.descricao}
                 </p>
               )}

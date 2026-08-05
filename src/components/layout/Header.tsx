@@ -149,7 +149,7 @@ export default function Header() {
                     className="flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-navy/80 transition-colors hover:bg-sand hover:text-navy"
                   >
                     {l.label}
-                    <ExternalLink className="h-3.5 w-3.5 shrink-0 text-navy/40" />
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0 text-navy/60" />
                   </a>
                 ))}
               </div>
@@ -172,7 +172,7 @@ export default function Header() {
       {open && (
         <div className="animate-slide-down safe-bottom absolute inset-x-0 top-16 z-30 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-navy/10 bg-white shadow-modal sm:top-20 lg:hidden">
           <nav className="flex flex-col p-3">
-            <p className="mb-1 px-4 text-xs font-bold uppercase tracking-wide text-navy/40">Links Úteis</p>
+            <p className="mb-1 px-4 text-xs font-bold uppercase tracking-wide text-navy/60">Links Úteis</p>
             {LINKS_UTEIS.map((l) => (
               <a
                 key={l.href}
@@ -183,7 +183,7 @@ export default function Header() {
                 className="tap-target flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-base font-semibold text-navy/70 active:bg-sand"
               >
                 {l.label}
-                <ExternalLink className="h-4 w-4 shrink-0 text-navy/40" />
+                <ExternalLink className="h-4 w-4 shrink-0 text-navy/60" />
               </a>
             ))}
           </nav>

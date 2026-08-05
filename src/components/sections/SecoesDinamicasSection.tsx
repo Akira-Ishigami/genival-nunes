@@ -34,7 +34,7 @@ function BlocoSecao({ secao, numero }: { secao: Secao; numero: number }) {
 
       {!loading && itens.length === 0 && (
         <Container>
-          <p className="text-center text-ink/50">Nenhum conteúdo publicado nesta seção ainda.</p>
+          <p className="text-center text-ink/70">Nenhum conteúdo publicado nesta seção ainda.</p>
         </Container>
       )}
 
@@ -47,7 +47,7 @@ function BlocoSecao({ secao, numero }: { secao: Secao; numero: number }) {
                 {(item.titulo || item.descricao) && (
                   <div className="p-4">
                     {item.titulo && <h3 className="line-clamp-1 font-display text-sm font-semibold text-navy">{item.titulo}</h3>}
-                    {item.descricao && <p className="line-clamp-2 text-xs text-ink/50">{item.descricao}</p>}
+                    {item.descricao && <p className="line-clamp-2 text-xs text-ink/70">{item.descricao}</p>}
                   </div>
                 )}
               </div>

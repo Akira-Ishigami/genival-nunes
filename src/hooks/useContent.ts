@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react';
-import { supabase, isDemoMode } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import type {
   Professor, Atividade, GaleriaFoto, Post, ConteudoInstitucional, ContatoInfo, SecaoItem,
 } from '../types';
-import {
-  MOCK_PROFESSORES, MOCK_ATIVIDADES, MOCK_GALERIA, MOCK_POSTS, MOCK_CONTEUDO, MOCK_CONTATO,
-  MOCK_SECOES, MOCK_SECAO_ITENS,
-} from '../lib/mockData';
 
-function useQuery<T>(mock: T, run: () => PromiseLike<{ data: T | null }>, deps: unknown[] = []) {
-  const [data, setData] = useState<T | null>(isDemoMode() ? mock : null);
-  const [loading, setLoading] = useState(!isDemoMode());
+function useQuery<T>(run: () => PromiseLike<{ data: T | null }>, deps: unknown[] = []) {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isDemoMode()) {
-      setData(mock);
-      setLoading(false);
-      return;
-    }
     let mounted = true;
     setLoading(true);
     run().then(({ data }) => {
@@ -36,21 +27,21 @@ function useQuery<T>(mock: T, run: () => PromiseLike<{ data: T | null }>, deps: 
 }
 
 export function useProfessores() {
-  const { data, loading } = useQuery<Professor[]>(MOCK_PROFESSORES, () =>
+  const { data, loading } = useQuery<Professor[]>(() =>
     supabase.from('professores').select('*').eq('ativo', true).order('ordem', { ascending: true }),
   );
   return { professores: data ?? [], loading };
 }
 
 export function useAtividades() {
-  const { data, loading } = useQuery<Atividade[]>(MOCK_ATIVIDADES, () =>
+  const { data, loading } = useQuery<Atividade[]>(() =>
     supabase.from('atividades').select('*').eq('ativo', true).order('ordem', { ascending: true }),
   );
   return { atividades: data ?? [], loading };
 }
 
 export function useGaleria() {
-  const { data, loading } = useQuery<GaleriaFoto[]>(MOCK_GALERIA, () =>
+  const { data, loading } = useQuery<GaleriaFoto[]>(() =>
     supabase.from('galeria_fotos').select('*').eq('ativo', true).order('ordem', { ascending: true }),
   );
   return { fotos: data ?? [], loading };
@@ -58,8 +49,7 @@ export function useGaleria() {
 
 export function usePostsAtivos() {
   const hoje = new Date().toISOString().slice(0, 10);
-  const mockAtivos = MOCK_POSTS.filter((p) => p.data_inicio <= hoje && (!p.data_fim || p.data_fim >= hoje));
-  const { data, loading } = useQuery<Post[]>(mockAtivos, () =>
+  const { data, loading } = useQuery<Post[]>(() =>
     supabase
       .from('posts')
       .select('*')
@@ -73,9 +63,7 @@ export function usePostsAtivos() {
 }
 
 export function useConteudo(chaves: string[]) {
-  const mock = chaves.map((c) => MOCK_CONTEUDO[c]).filter(Boolean);
   const { data, loading } = useQuery<ConteudoInstitucional[]>(
-    mock,
     () => supabase.from('conteudo_institucional').select('*').in('chave', chaves),
     [chaves.join(',')],
   );
@@ -85,7 +73,7 @@ export function useConteudo(chaves: string[]) {
 }
 
 export function useContato() {
-  const { data, loading } = useQuery<ContatoInfo>(MOCK_CONTATO, () =>
+  const { data, loading } = useQuery<ContatoInfo>(() =>
     supabase.from('contato_info').select('*').eq('id', 1).single(),
   );
   return { contato: data, loading };
@@ -97,14 +85,6 @@ export function useSecaoBySlug(slug: string) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isDemoMode()) {
-      const s = MOCK_SECOES.find((sec) => sec.slug === slug) ?? null;
-      setSecao(s);
-      setItens(s ? MOCK_SECAO_ITENS[slug] ?? [] : []);
-      setLoading(false);
-      return;
-    }
-
     let mounted = true;
     setLoading(true);
     supabase
