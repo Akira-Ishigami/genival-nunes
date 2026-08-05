@@ -18,6 +18,13 @@ const ROTULO_PERIODO: Record<PeriodoAnalytics, string> = {
   total: 'desde o início',
 };
 
+const TITULO_GRAFICO: Record<PeriodoAnalytics, string> = {
+  hoje: 'Acessos de hoje, por hora',
+  semana: 'Acessos nos últimos 7 dias',
+  mes: 'Acessos nos últimos 30 dias',
+  total: 'Acessos desde o início',
+};
+
 const CARDS = [
   { table: 'professores', label: 'Equipe', icon: Users, to: '/admin/professores' },
   { table: 'atividades', label: 'Atividades', icon: Trophy, to: '/admin/atividades' },
@@ -45,7 +52,7 @@ export default function DashboardPage() {
     });
   }, []);
 
-  const maxDia = dados ? Math.max(1, ...dados.porDia.map((d) => d.total)) : 1;
+  const maxSerie = dados ? Math.max(1, ...dados.serie.map((d) => d.total)) : 1;
   const totalDispositivos = dados ? dados.porDispositivo.reduce((s, d) => s + d.total, 0) : 0;
 
   return (
@@ -137,21 +144,23 @@ export default function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
-            {/* Gráfico simples dos últimos 14 dias */}
+            {/* Gráfico da série de acessos, no formato certo pro período escolhido acima */}
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card lg:col-span-3">
-              <p className="mb-4 text-sm font-semibold text-ink">Acessos nos últimos 14 dias</p>
-              {dados.porDia.every((d) => d.total === 0) ? (
+              <p className="mb-4 text-sm font-semibold text-ink">{TITULO_GRAFICO[periodo]}</p>
+              {dados.serie.length === 0 || dados.serie.every((d) => d.total === 0) ? (
                 <p className="py-8 text-center text-sm text-slate-400">Ainda não há acessos registrados.</p>
               ) : (
                 <div className="flex h-40 gap-1.5">
-                  {dados.porDia.map((d) => (
-                    <div key={d.dia} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
+                  {dados.serie.map((d, i) => (
+                    <div key={`${d.rotulo}-${i}`} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
                       <div
                         className="w-full rounded-t-md bg-brand/80 transition-all"
-                        style={{ height: `${Math.max(4, (d.total / maxDia) * 100)}%` }}
-                        title={`${d.dia}: ${d.total} acessos`}
+                        style={{ height: `${Math.max(4, (d.total / maxSerie) * 100)}%` }}
+                        title={`${d.rotulo}: ${d.total} acessos`}
                       />
-                      <span className="text-[9px] text-slate-400">{d.dia.slice(0, 2)}</span>
+                      <span className="text-[9px] text-slate-400">
+                        {dados.serieGranularidade === 'dia' ? d.rotulo.slice(0, 2) : d.rotulo}
+                      </span>
                     </div>
                   ))}
                 </div>
