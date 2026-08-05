@@ -143,9 +143,9 @@ export default function DashboardPage() {
               {dados.porDia.every((d) => d.total === 0) ? (
                 <p className="py-8 text-center text-sm text-slate-400">Ainda não há acessos registrados.</p>
               ) : (
-                <div className="flex h-40 items-end gap-1.5">
+                <div className="flex h-40 gap-1.5">
                   {dados.porDia.map((d) => (
-                    <div key={d.dia} className="flex flex-1 flex-col items-center gap-1.5">
+                    <div key={d.dia} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
                       <div
                         className="w-full rounded-t-md bg-brand/80 transition-all"
                         style={{ height: `${Math.max(4, (d.total / maxDia) * 100)}%` }}
