@@ -8,21 +8,18 @@ const PERIODOS: { value: PeriodoAnalytics; label: string }[] = [
   { value: 'hoje', label: 'Hoje' },
   { value: 'semana', label: 'Semana' },
   { value: 'mes', label: 'Mês' },
-  { value: 'total', label: 'Total' },
 ];
 
 const ROTULO_PERIODO: Record<PeriodoAnalytics, string> = {
   hoje: 'hoje',
   semana: 'esta semana',
   mes: 'este mês',
-  total: 'desde o início',
 };
 
 const TITULO_GRAFICO: Record<PeriodoAnalytics, string> = {
-  hoje: 'Acessos de hoje, por hora',
+  hoje: 'Acessos de hoje',
   semana: 'Acessos nesta semana',
   mes: 'Acessos neste mês',
-  total: 'Acessos desde o início',
 };
 
 const CARDS = [
@@ -40,7 +37,7 @@ const ICONE_DISPOSITIVO: Record<string, typeof Smartphone> = {
 
 export default function DashboardPage() {
   const [contagens, setContagens] = useState<Record<string, number>>({});
-  const [periodo, setPeriodo] = useState<PeriodoAnalytics>('total');
+  const [periodo, setPeriodo] = useState<PeriodoAnalytics>('hoje');
   const { dados, loading: carregandoAnalytics, recarregando, atualizar } = useAnalytics(periodo);
 
   useEffect(() => {
@@ -159,7 +156,7 @@ export default function DashboardPage() {
                         title={`${d.rotulo}: ${d.total} acessos`}
                       />
                       <span className="text-[9px] text-slate-400">
-                        {dados.serieGranularidade === 'dia' ? d.rotulo.slice(0, 2) : d.rotulo}
+                        {periodo === 'hoje' ? d.rotulo : d.rotulo.slice(0, 2)}
                       </span>
                     </div>
                   ))}
