@@ -6,22 +6,22 @@ import { useAnalytics, type PeriodoAnalytics } from '../../hooks/useAnalytics';
 
 const PERIODOS: { value: PeriodoAnalytics; label: string }[] = [
   { value: 'hoje', label: 'Hoje' },
-  { value: 'semana', label: '7 dias' },
-  { value: 'mes', label: '30 dias' },
+  { value: 'semana', label: 'Semana' },
+  { value: 'mes', label: 'Mês' },
   { value: 'total', label: 'Total' },
 ];
 
 const ROTULO_PERIODO: Record<PeriodoAnalytics, string> = {
   hoje: 'hoje',
-  semana: 'últimos 7 dias',
-  mes: 'últimos 30 dias',
+  semana: 'esta semana',
+  mes: 'este mês',
   total: 'desde o início',
 };
 
 const TITULO_GRAFICO: Record<PeriodoAnalytics, string> = {
   hoje: 'Acessos de hoje, por hora',
-  semana: 'Acessos nos últimos 7 dias',
-  mes: 'Acessos nos últimos 30 dias',
+  semana: 'Acessos nesta semana',
+  mes: 'Acessos neste mês',
   total: 'Acessos desde o início',
 };
 
@@ -132,8 +132,8 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
               { label: 'Acessos hoje', valor: dados.hoje },
-              { label: 'Últimos 7 dias', valor: dados.semana },
-              { label: 'Últimos 30 dias', valor: dados.mes },
+              { label: 'Esta semana', valor: dados.semana },
+              { label: 'Este mês', valor: dados.mes },
               { label: 'Desde o início', valor: dados.total },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">

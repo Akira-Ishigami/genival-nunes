@@ -20,22 +20,39 @@ const NOMES_DISPOSITIVO: Record<string, string> = {
   desktop: 'Computador',
 };
 
-function inicioDoDia(diasAtras: number) {
+function inicioDoDiaAtual() {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() - diasAtras);
+  return d;
+}
+
+// Domingo da semana atual (calendário, não janela rolante de 7 dias).
+function inicioDaSemanaAtual() {
+  const d = inicioDoDiaAtual();
+  d.setDate(d.getDate() - d.getDay());
+  return d;
+}
+
+// Dia 1 do mês atual (calendário, não janela rolante de 30 dias).
+function inicioDoMesAtual() {
+  const d = inicioDoDiaAtual();
+  d.setDate(1);
   return d;
 }
 
 function inicioDoPeriodo(periodo: PeriodoAnalytics): Date | null {
-  if (periodo === 'hoje') return inicioDoDia(0);
-  if (periodo === 'semana') return inicioDoDia(6);
-  if (periodo === 'mes') return inicioDoDia(29);
+  if (periodo === 'hoje') return inicioDoDiaAtual();
+  if (periodo === 'semana') return inicioDaSemanaAtual();
+  if (periodo === 'mes') return inicioDoMesAtual();
   return null; // total: sem limite
 }
 
+function diasEntre(inicio: Date, fim: Date) {
+  return Math.floor((fim.getTime() - inicio.getTime()) / 86400000);
+}
+
 // Monta a série do gráfico de acordo com o período escolhido: por hora (hoje),
-// por dia (7/30 dias) ou por dia/mês (total, dependendo de quão longo é o histórico).
+// por dia (semana/mês atuais) ou por dia/mês (total, dependendo do histórico).
 function montarSerie(
   periodo: PeriodoAnalytics,
   linhas: { created_at: string }[],
@@ -54,11 +71,13 @@ function montarSerie(
   }
 
   if (periodo === 'semana' || periodo === 'mes') {
-    const dias = periodo === 'semana' ? 6 : 29;
+    const inicio = periodo === 'semana' ? inicioDaSemanaAtual() : inicioDoMesAtual();
+    const dias = diasEntre(inicio, inicioDoDiaAtual());
     const diaMap = new Map<string, number>();
-    for (let i = dias; i >= 0; i--) {
-      const chave = inicioDoDia(i).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-      diaMap.set(chave, 0);
+    for (let i = 0; i <= dias; i++) {
+      const d = new Date(inicio);
+      d.setDate(d.getDate() + i);
+      diaMap.set(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), 0);
     }
     linhas.forEach((r) => {
       const chave = new Date(r.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
@@ -74,13 +93,14 @@ function montarSerie(
   if (linhas.length === 0) return { serie: [], serieGranularidade: 'dia' };
   const datas = linhas.map((r) => new Date(r.created_at).getTime());
   const primeira = new Date(Math.min(...datas));
-  const diasDeHistorico = Math.floor((Date.now() - primeira.getTime()) / 86400000);
+  const diasDeHistorico = diasEntre(primeira, new Date());
 
   if (diasDeHistorico <= 60) {
     const diaMap = new Map<string, number>();
     for (let i = diasDeHistorico; i >= 0; i--) {
-      const chave = inicioDoDia(i).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-      diaMap.set(chave, 0);
+      const d = inicioDoDiaAtual();
+      d.setDate(d.getDate() - i);
+      diaMap.set(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }), 0);
     }
     linhas.forEach((r) => {
       const chave = new Date(r.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
@@ -145,9 +165,9 @@ export function useAnalytics(periodo: PeriodoAnalytics = 'total') {
   const dados = useMemo<AnalyticsResumo | null>(() => {
     if (!linhas) return null;
 
-    const hojeInicio = inicioDoDia(0);
-    const semanaInicio = inicioDoDia(6);
-    const mesInicio = inicioDoDia(29);
+    const hojeInicio = inicioDoDiaAtual();
+    const semanaInicio = inicioDaSemanaAtual();
+    const mesInicio = inicioDoMesAtual();
     const inicioSelecionado = inicioDoPeriodo(periodo);
 
     let hoje = 0;
