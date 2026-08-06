@@ -37,6 +37,8 @@ export default function HeroSection() {
         alt="Fachada da EEEFM Deputado Genival Nunes da Costa"
         className="absolute inset-0 h-full w-full object-cover"
         style={{ transform: `translateY(${offset * 0.06}px)` }}
+        fetchPriority="high"
+        loading="eager"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-navy-deep via-navy-deep/80 to-navy-deep/30 sm:from-navy-deep sm:via-navy-deep/75 sm:to-navy-deep/25" />
       <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/5 to-transparent" />

@@ -1,16 +1,20 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 import HomePage from './pages/public/HomePage';
 
-import LoginPage from './pages/admin/LoginPage';
-import AdminLayout from './components/admin/AdminLayout';
-import DashboardPage from './pages/admin/DashboardPage';
-import ProfessoresAdminPage from './pages/admin/ProfessoresAdminPage';
-import AtividadesAdminPage from './pages/admin/AtividadesAdminPage';
-import GaleriaAdminPage from './pages/admin/GaleriaAdminPage';
-import PostsAdminPage from './pages/admin/PostsAdminPage';
-import VidaEstudantilAdminPage from './pages/admin/VidaEstudantilAdminPage';
+// O painel admin só carrega pra quem realmente acessa /admin/* — assim o
+// pacote JS que o Google baixa pra indexar o site público fica bem menor
+// (o tempo de carregamento conta pro ranqueamento nas buscas).
+const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+const ProfessoresAdminPage = lazy(() => import('./pages/admin/ProfessoresAdminPage'));
+const AtividadesAdminPage = lazy(() => import('./pages/admin/AtividadesAdminPage'));
+const GaleriaAdminPage = lazy(() => import('./pages/admin/GaleriaAdminPage'));
+const PostsAdminPage = lazy(() => import('./pages/admin/PostsAdminPage'));
+const VidaEstudantilAdminPage = lazy(() => import('./pages/admin/VidaEstudantilAdminPage'));
 
 function Spinner() {
   return (
@@ -26,12 +30,23 @@ function AdminRoute() {
   const { isAdmin, loading } = useAuth();
   if (loading) return <Spinner />;
   if (!isAdmin) return <Navigate to="/" replace />;
-  return <Outlet />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Outlet />
+    </Suspense>
+  );
 }
 
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
-  { path: '/admin/login', element: <LoginPage /> },
+  {
+    path: '/admin/login',
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <LoginPage />
+      </Suspense>
+    ),
+  },
   {
     element: <AdminRoute />,
     children: [
