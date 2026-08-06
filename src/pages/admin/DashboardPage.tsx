@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Trophy, Images, Megaphone, ExternalLink, Smartphone, Monitor, Tablet, Eye, RefreshCw } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { useAnalytics, type PeriodoAnalytics } from '../../hooks/useAnalytics';
+import { useAnalytics, type AnalyticsResumo, type PeriodoAnalytics } from '../../hooks/useAnalytics';
 
-const PERIODOS: { value: PeriodoAnalytics; label: string }[] = [
-  { value: 'hoje', label: 'Hoje' },
-  { value: 'semana', label: 'Semana' },
-  { value: 'mes', label: 'Mês' },
-  { value: 'total', label: 'Total' },
+const PERIODOS: { value: PeriodoAnalytics; label: string; valorLabel: string; valor: (d: AnalyticsResumo) => number }[] = [
+  { value: 'hoje', label: 'Hoje', valorLabel: 'Acessos hoje', valor: (d) => d.hoje },
+  { value: 'semana', label: 'Semana', valorLabel: 'Esta semana', valor: (d) => d.semana },
+  { value: 'mes', label: 'Mês', valorLabel: 'Este mês', valor: (d) => d.mes },
+  { value: 'total', label: 'Total', valorLabel: 'Desde o início', valor: (d) => d.total },
 ];
 
 const ROTULO_PERIODO: Record<PeriodoAnalytics, string> = {
@@ -88,36 +88,20 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Eye className="h-5 w-5 text-brand" />
           <h2 className="font-display text-lg font-bold text-ink">Quem está visitando o site</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
-            {PERIODOS.map((p) => (
-              <button
-                key={p.value}
-                type="button"
-                onClick={() => setPeriodo(p.value)}
-                className={`tap-target rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  periodo === p.value ? 'bg-white text-brand shadow-card' : 'text-slate-500 hover:text-ink'
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={atualizar}
-            disabled={recarregando}
-            aria-label="Atualizar resultados"
-            className="tap-target flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-500 transition-colors hover:text-brand disabled:opacity-60"
-          >
-            <RefreshCw className={`h-4 w-4 ${recarregando ? 'animate-spin' : ''}`} />
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={atualizar}
+          disabled={recarregando}
+          aria-label="Atualizar resultados"
+          className="tap-target flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-500 transition-colors hover:text-brand disabled:opacity-60"
+        >
+          <RefreshCw className={`h-4 w-4 ${recarregando ? 'animate-spin' : ''}`} />
+        </button>
       </div>
 
       {carregandoAnalytics && (
@@ -128,18 +112,22 @@ export default function DashboardPage() {
 
       {!carregandoAnalytics && dados && (
         <div className="flex flex-col gap-5">
-          {/* Resumo rápido: hoje, semana, mês, total */}
+          {/* Os cards de resumo também são o filtro de período: clique pra ver o detalhe daquele período. */}
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {[
-              { label: 'Acessos hoje', valor: dados.hoje },
-              { label: 'Esta semana', valor: dados.semana },
-              { label: 'Este mês', valor: dados.mes },
-              { label: 'Desde o início', valor: dados.total },
-            ].map((s) => (
-              <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-                <p className="text-3xl font-bold text-ink">{s.valor}</p>
-                <p className="mt-1 text-sm font-medium text-slate-500">{s.label}</p>
-              </div>
+            {PERIODOS.map((p) => (
+              <button
+                key={p.value}
+                type="button"
+                onClick={() => setPeriodo(p.value)}
+                className={`tap-target rounded-2xl border p-5 text-left shadow-card transition-all ${
+                  periodo === p.value
+                    ? 'border-brand bg-brand/5 ring-2 ring-brand/30'
+                    : 'border-slate-200 bg-white hover:border-brand/30'
+                }`}
+              >
+                <p className="text-3xl font-bold text-ink">{p.valor(dados)}</p>
+                <p className="mt-1 text-sm font-medium text-slate-500">{p.valorLabel}</p>
+              </button>
             ))}
           </div>
 
